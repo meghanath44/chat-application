@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Home: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -6,14 +7,18 @@ const Home: React.FC = () => {
   const [rePassword, setRePassword] = useState("");
   const [displayText, setDisplayText] = useState("");
   const [state, setState] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (state) {
       if (password != rePassword) {
         setDisplayText("Password mismatch");
+        return;
       }
+      
     }
+    navigate('/dashboard');
   };
 
   const setStateTo = (t: boolean) => {
@@ -45,7 +50,7 @@ const Home: React.FC = () => {
             <h2>Signup</h2>
             <input
               type="text"
-              placeholder="Username"
+              placeholder="Username / Email Address"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
@@ -76,7 +81,7 @@ const Home: React.FC = () => {
             <h2>Login</h2>
             <input
               type="text"
-              placeholder="Username"
+              placeholder="Username / Email Address"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
