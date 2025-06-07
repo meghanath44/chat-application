@@ -5,9 +5,6 @@ const TopBar: React.FC = () => {
       <div className="top-bar-left">
         <h2>ChatApp</h2>
       </div>
-      <div className="top-bar-right">
-        
-      </div>
     </div>
   );
 };

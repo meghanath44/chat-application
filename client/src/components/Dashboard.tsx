@@ -6,7 +6,7 @@ import ChatsBar from "./ChatsBar";
 
 const Dashboard: React.FC = () => {
   return (
-    <div>
+    <div className="container">
       <TopBar></TopBar>
       <div className="dashboard-container">
         <SideBar></SideBar>

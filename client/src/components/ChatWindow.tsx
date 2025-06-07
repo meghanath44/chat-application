@@ -1,13 +1,19 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../Dashboard.css";
-const ChatWindow: React.FC = () => {
 
+const ChatWindow: React.FC = () => {
   const [messages, setMessages] = useState([
     { from: "Alice", text: "Hey, how are you?", mine: false },
     { from: "Me", text: "I’m good, thanks!", mine: true },
     { from: "Alice", text: "Wanna catch up later?", mine: false },
   ]);
+
   const [input, setInput] = useState("");
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const handleSend = () => {
     if (input.trim() !== "") {
@@ -18,10 +24,20 @@ const ChatWindow: React.FC = () => {
 
   return (
     <div className="chat-window">
-        <div className="chat-desc">
-            <div className="chat-avatar">A</div>
-            <div>Alice</div>
+      <div className="chat-desc">
+        <div className="chat-desc-left">
+          <div className="chat-avatar">A</div>
+          <div>Alice</div>
         </div>
+        <div className="chat-desc-right">
+          <div className="video-icon" onClick={() => alert("Video call")}>
+            📹
+          </div>
+          <div className="audio-icon" onClick={() => alert("Audio call")}>
+            📞
+          </div>
+        </div>
+      </div>
       <div className="messages">
         {messages.map((msg, idx) => (
           <div
@@ -31,6 +47,7 @@ const ChatWindow: React.FC = () => {
             {msg.text}
           </div>
         ))}
+        <div ref={bottomRef}></div>
       </div>
       <div className="message-input-area">
         <input
