@@ -10,9 +10,9 @@ namespace server.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
-        public UserController(UserService userService)
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }
@@ -20,11 +20,12 @@ namespace server.Controllers
         [HttpPost(Name = "adduser")]
         public Result AddUser([FromBody] User user)
         {
-            Result result = new Result()
-            {
-                isSuccess = true
-            };
-            return result;
+            return _userService.AddUser(user);
+        }
+
+        [HttpGet(Name = "validateuser")]
+        public Result ValidateUser([FromQuery] string userName, [FromQuery] string password) { 
+            return _userService.ValidateUser(userName, password);
         }
     }
 }
