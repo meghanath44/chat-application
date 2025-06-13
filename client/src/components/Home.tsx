@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+interface User{
+  email : string;
+  password : string
+}
+
 const Home: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -9,6 +14,22 @@ const Home: React.FC = () => {
   const [state, setState] = useState(false);
   const navigate = useNavigate();
 
+  async function addUser() {
+    const response = await fetch('https://localhost:44330/api/user',{
+      method:'POST',
+      headers:{
+        'Content-Type' : 'application/json'
+      },
+      body: JSON.stringify({
+        "email" : username,
+        "password" : password
+      }),
+      mode:'cors'
+    });
+    const data = await response.json();
+    return data;
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (state) {
@@ -16,7 +37,9 @@ const Home: React.FC = () => {
         setDisplayText("Password mismatch");
         return;
       }
-      
+      addUser().then((data)=>{
+        data.isSuccess?navigate('/dashboard'):setDisplayText("invalid details");
+    });
     }
     navigate('/dashboard');
   };
@@ -50,7 +73,7 @@ const Home: React.FC = () => {
             <h2>Signup</h2>
             <input
               type="text"
-              placeholder="Username / Email Address"
+              placeholder="Email Address"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
