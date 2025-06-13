@@ -11,7 +11,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("reactOrigin", policy =>
     {
-        policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod();
+        policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
     });
 });
 
@@ -27,7 +27,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSignalRCore();
+builder.Services.AddSignalR();
 
 
 
@@ -50,6 +50,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//app.MapHub<ChatHub>("/hub");
+app.MapHub<ChatHub>("/chatHub");
 
 app.Run();
