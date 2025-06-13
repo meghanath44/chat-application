@@ -7,6 +7,10 @@ interface ChatItemProps {
   time: string;
 }
 
+type Props = {
+  setSelectedFriend:(friend:string) => void;
+}
+
 const chats: ChatItemProps[] = [
   { name: "Alice", lastMessage: "See you soon!", time: "10:45 AM" },
   { name: "Bob", lastMessage: "Got it!", time: "9:12 AM" },
@@ -22,7 +26,9 @@ const chats: ChatItemProps[] = [
   { name: "Charlie", lastMessage: "Hey there!", time: "Yesterday" },
 ];
 
-const ChatsBar: React.FC = () => {
+const ChatsBar: React.FC<Props> = ({setSelectedFriend}:Props) => {
+
+  const [chatFriends, setChatFriends] = useState<ChatItemProps[]>(chats);
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
@@ -38,12 +44,12 @@ const ChatsBar: React.FC = () => {
         />
       </div>
       <div className="chat-list">
-        {chats
+        {chatFriends
           .filter((item) => {
             return item.name.toLowerCase().startsWith(searchQuery);
           })
           .map((chat, index) => (
-            <div className="chat-item" key={index}>
+            <div className="chat-item" key={index} onClick={(e)=>setSelectedFriend(chat.name)}>
               <div className="chat-avatar">{chat.name[0]}</div>
               <div className="chat-details">
                 <div className="chat-name">{chat.name}</div>

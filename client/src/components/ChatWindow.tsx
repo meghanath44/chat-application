@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import "../Dashboard.css";
 
-const ChatWindow: React.FC = () => {
+type Props = {
+  selectedFriend : string;
+}
+
+const ChatWindow: React.FC<Props> = ({selectedFriend} : Props) => {
   const [messages, setMessages] = useState([
     { from: "Alice", text: "Hey, how are you?", mine: false },
     { from: "Me", text: "I’m good, thanks!", mine: true },
     { from: "Alice", text: "Wanna catch up later?", mine: false },
   ]);
-
   const [input, setInput] = useState("");
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
@@ -22,12 +25,15 @@ const ChatWindow: React.FC = () => {
     }
   };
 
-  return (
-    <div className="chat-window">
+  return <div className="window">
+    {(selectedFriend=="")?(<div>
+
+    </div>):(
+      <div className="chat-window">
       <div className="chat-desc">
         <div className="chat-desc-left">
-          <div className="chat-avatar">A</div>
-          <div>Alice</div>
+          <div className="chat-avatar"></div>
+          <div>{selectedFriend}</div>
         </div>
         <div className="chat-desc-right">
           <div className="video-icon" onClick={() => alert("Video call")}>
@@ -61,7 +67,8 @@ const ChatWindow: React.FC = () => {
         <button onClick={handleSend}>Send</button>
       </div>
     </div>
-  );
+    )};
+    </div>
 };
 
 export default ChatWindow;
