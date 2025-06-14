@@ -9,6 +9,7 @@ interface ChatItemProps {
 
 type Props = {
   setSelectedFriend:(friend:string) => void;
+  chatList : any[]
 }
 
 const chats: ChatItemProps[] = [
@@ -26,9 +27,7 @@ const chats: ChatItemProps[] = [
   { name: "Charlie", lastMessage: "Hey there!", time: "Yesterday" },
 ];
 
-const ChatsBar: React.FC<Props> = ({setSelectedFriend}:Props) => {
-
-  const [chatFriends, setChatFriends] = useState<ChatItemProps[]>(chats);
+const ChatsBar: React.FC<Props> = ({setSelectedFriend, chatList}:Props) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
@@ -44,7 +43,7 @@ const ChatsBar: React.FC<Props> = ({setSelectedFriend}:Props) => {
         />
       </div>
       <div className="chat-list">
-        {chatFriends
+        {chatList
           .filter((item) => {
             return item.name.toLowerCase().startsWith(searchQuery);
           })
