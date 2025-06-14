@@ -1,7 +1,84 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|c:\\users\\megha\\source\\repos\\chat-application\\server\\hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|solutionrelative:hubs\\chathub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|c:\\users\\megha\\source\\repos\\chat-application\\server\\repositories\\chatrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|solutionrelative:repositories\\chatrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|c:\\users\\megha\\source\\repos\\chat-application\\server\\services\\chatservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|solutionrelative:services\\chatservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|c:\\users\\megha\\source\\repos\\chat-application\\server\\repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|solutionrelative:repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|c:\\users\\megha\\source\\repos\\chat-application\\server\\models\\friendship.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|solutionrelative:models\\friendship.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|c:\\users\\megha\\source\\repos\\chat-application\\server\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|solutionrelative:models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|c:\\users\\megha\\source\\repos\\chat-application\\server\\testdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|solutionrelative:testdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|c:\\users\\megha\\source\\repos\\chat-application\\server\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|solutionrelative:services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|c:\\users\\megha\\source\\repos\\chat-application\\server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|c:\\users\\megha\\source\\repos\\chat-application\\server\\repositories\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|solutionrelative:repositories\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|c:\\users\\megha\\source\\repos\\chat-application\\server\\models\\message.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|solutionrelative:models\\message.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|c:\\users\\megha\\source\\repos\\chat-application\\server\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|solutionrelative:controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|c:\\users\\megha\\source\\repos\\chat-application\\server\\repositories\\ichatrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|solutionrelative:repositories\\ichatrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|c:\\users\\megha\\source\\repos\\chat-application\\server\\services\\ichatservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|solutionrelative:services\\ichatservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|c:\\users\\megha\\source\\repos\\chat-application\\server\\viewmodels\\chatsummary.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|solutionrelative:viewmodels\\chatsummary.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|c:\\users\\megha\\source\\repos\\chat-application\\server\\viewmodels\\result.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|solutionrelative:viewmodels\\result.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|c:\\users\\megha\\source\\repos\\chat-application\\server\\server.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|solutionrelative:server.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|c:\\users\\megha\\source\\repos\\chat-application\\server\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|c:\\users\\megha\\source\\repos\\chat-application\\server\\services\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{70F10888-CF78-4004-900C-06BFE4089705}|server.csproj|solutionrelative:services\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,11 +86,254 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "Services\\UserService.cs",
+              "ToolTip": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Services\\UserService.cs",
+              "RelativeToolTip": "Services\\UserService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-10T20:29:01.053Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ChatHub.cs",
+              "DocumentMoniker": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Hubs\\ChatHub.cs",
+              "RelativeDocumentMoniker": "Hubs\\ChatHub.cs",
+              "ToolTip": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Hubs\\ChatHub.cs",
+              "RelativeToolTip": "Hubs\\ChatHub.cs",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAABwAAABFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-10T19:39:30.727Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "TestDBContext.cs",
+              "DocumentMoniker": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\TestDBContext.cs",
+              "RelativeDocumentMoniker": "TestDBContext.cs",
+              "ToolTip": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\TestDBContext.cs",
+              "RelativeToolTip": "TestDBContext.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAuAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-11T22:21:56.975Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UserRepository.cs",
+              "DocumentMoniker": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Repositories\\UserRepository.cs",
+              "RelativeDocumentMoniker": "Repositories\\UserRepository.cs",
+              "ToolTip": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Repositories\\UserRepository.cs",
+              "RelativeToolTip": "Repositories\\UserRepository.cs",
+              "ViewState": "AQIAAAUAAAAAAAAAAAAxwBYAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-11T15:57:02.415Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Models\\User.cs",
+              "RelativeDocumentMoniker": "Models\\User.cs",
+              "ToolTip": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Models\\User.cs",
+              "RelativeToolTip": "Models\\User.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAsAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-10T19:33:25.355Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "IChatService.cs",
+              "DocumentMoniker": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Services\\IChatService.cs",
+              "RelativeDocumentMoniker": "Services\\IChatService.cs",
+              "ToolTip": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Services\\IChatService.cs",
+              "RelativeToolTip": "Services\\IChatService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAABFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-14T02:56:24.07Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABUAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-10T19:35:09.223Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "Controllers\\UserController.cs",
+              "ToolTip": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Controllers\\UserController.cs",
+              "RelativeToolTip": "Controllers\\UserController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-10T20:20:12.966Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ChatService.cs",
+              "DocumentMoniker": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Services\\ChatService.cs",
+              "RelativeDocumentMoniker": "Services\\ChatService.cs",
+              "ToolTip": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Services\\ChatService.cs",
+              "RelativeToolTip": "Services\\ChatService.cs",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAABMAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-14T02:56:43.605Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ChatRepository.cs",
+              "DocumentMoniker": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Repositories\\ChatRepository.cs",
+              "RelativeDocumentMoniker": "Repositories\\ChatRepository.cs",
+              "ToolTip": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Repositories\\ChatRepository.cs",
+              "RelativeToolTip": "Repositories\\ChatRepository.cs",
+              "ViewState": "AQIAAAsAAAAAAAAAAADwvw8AAAAMAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-14T02:52:31.209Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Message.cs",
+              "DocumentMoniker": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Models\\Message.cs",
+              "RelativeDocumentMoniker": "Models\\Message.cs",
+              "ToolTip": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Models\\Message.cs",
+              "RelativeToolTip": "Models\\Message.cs",
+              "ViewState": "AQIAAAUAAAAAAAAAAAAmwB8AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-14T02:43:41.716Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Friendship.cs",
+              "DocumentMoniker": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Models\\Friendship.cs",
+              "RelativeDocumentMoniker": "Models\\Friendship.cs",
+              "ToolTip": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Models\\Friendship.cs",
+              "RelativeToolTip": "Models\\Friendship.cs",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAABcAAAA3AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-13T01:41:10.029Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "IUserRepository.cs",
+              "DocumentMoniker": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Repositories\\IUserRepository.cs",
+              "RelativeDocumentMoniker": "Repositories\\IUserRepository.cs",
+              "ToolTip": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Repositories\\IUserRepository.cs",
+              "RelativeToolTip": "Repositories\\IUserRepository.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-11T15:59:33.38Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ChatSummary.cs",
+              "DocumentMoniker": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\ViewModels\\ChatSummary.cs",
+              "RelativeDocumentMoniker": "ViewModels\\ChatSummary.cs",
+              "ToolTip": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\ViewModels\\ChatSummary.cs",
+              "RelativeToolTip": "ViewModels\\ChatSummary.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAyAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-14T02:50:14.251Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "IChatRepository.cs",
+              "DocumentMoniker": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Repositories\\IChatRepository.cs",
+              "RelativeDocumentMoniker": "Repositories\\IChatRepository.cs",
+              "ToolTip": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Repositories\\IChatRepository.cs",
+              "RelativeToolTip": "Repositories\\IChatRepository.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAABFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-14T02:51:24.339Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Result.cs",
+              "DocumentMoniker": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\ViewModels\\Result.cs",
+              "RelativeDocumentMoniker": "ViewModels\\Result.cs",
+              "ToolTip": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\ViewModels\\Result.cs",
+              "RelativeToolTip": "ViewModels\\Result.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAArAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-10T20:22:30.199Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "IUserService.cs",
+              "DocumentMoniker": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Services\\IUserService.cs",
+              "RelativeDocumentMoniker": "Services\\IUserService.cs",
+              "ToolTip": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\Services\\IUserService.cs",
+              "RelativeToolTip": "Services\\IUserService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAABEAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-10T20:30:16.961Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "server.csproj",
+              "DocumentMoniker": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\server.csproj",
+              "RelativeDocumentMoniker": "server.csproj",
+              "ToolTip": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\server.csproj",
+              "RelativeToolTip": "server.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-06-11T22:21:38.284Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Users\\megha\\source\\repos\\chat-application\\server\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-06-11T21:40:36.453Z"
             }
           ]
         }
