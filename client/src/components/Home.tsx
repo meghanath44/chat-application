@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface User{
-  email : string;
+  username : string;
   password : string
 }
 
 const Home: React.FC = () => {
+  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
@@ -21,14 +22,28 @@ const Home: React.FC = () => {
         'Content-Type' : 'application/json'
       },
       body: JSON.stringify({
-        "email" : username,
-        "password" : password
+        "Email" : email,
+        "Username" : username,
+        "Password" : password,
+        "CreatedAt" : new Date()
       }),
       mode:'cors'
     });
     const data = await response.json();
     return data;
   }
+
+  // async function validate(){
+  //   const response = await fetch(`https://localhost:44330/api/user?username=${username}`,{
+  //     method:'GET',
+  //     headers:{
+  //       'Content-Type' : 'application/json'
+  //     },
+  //     mode:'cors'
+  //   });
+  //   const data = await response.json();
+  //   return data;
+  // }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,13 +53,18 @@ const Home: React.FC = () => {
         return;
       }
       addUser().then((data)=>{
-        data.isSuccess?navigate('/dashboard'):setDisplayText("invalid details");
+        data.isSuccess?navigate('/dashboard', {state : {username}}):setDisplayText("invalid details");
     });
     }
-    navigate('/dashboard');
+    else{
+
+      navigate('/dashboard');
+    }
+    
   };
 
   const setStateTo = (t: boolean) => {
+    setEmail("");
     setUsername("");
     setPassword("");
     setRePassword("");
@@ -74,6 +94,13 @@ const Home: React.FC = () => {
             <input
               type="text"
               placeholder="Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
@@ -104,7 +131,7 @@ const Home: React.FC = () => {
             <h2>Login</h2>
             <input
               type="text"
-              placeholder="Username / Email Address"
+              placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
