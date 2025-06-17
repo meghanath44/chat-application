@@ -2,32 +2,17 @@ import { useState } from "react";
 import "../Dashboard.css";
 
 interface ChatItemProps {
-  name: string;
+  friendUserName: string;
   lastMessage: string;
-  time: string;
+  lastMessageTime: string;
 }
 
 type Props = {
-  setSelectedFriend:(friend:string) => void;
-  chatList : any[]
-}
+  setSelectedFriend: (friend: string) => void;
+  chatList: ChatItemProps[];
+};
 
-const chats: ChatItemProps[] = [
-  { name: "Alice", lastMessage: "See you soon!", time: "10:45 AM" },
-  { name: "Bob", lastMessage: "Got it!", time: "9:12 AM" },
-  { name: "Charlie", lastMessage: "Hey there!", time: "Yesterday" },
-  { name: "Alice", lastMessage: "See you soon!", time: "10:45 AM" },
-  { name: "Bob", lastMessage: "Got it!", time: "9:12 AM" },
-  { name: "Charlie", lastMessage: "Hey there!", time: "Yesterday" },
-  { name: "Alice", lastMessage: "See you soon!", time: "10:45 AM" },
-  { name: "Bob", lastMessage: "Got it!", time: "9:12 AM" },
-  { name: "Charlie", lastMessage: "Hey there!", time: "Yesterday" },
-  { name: "Alice", lastMessage: "See you soon!", time: "10:45 AM" },
-  { name: "Bob", lastMessage: "Got it!", time: "9:12 AM" },
-  { name: "Charlie", lastMessage: "Hey there!", time: "Yesterday" },
-];
-
-const ChatsBar: React.FC<Props> = ({setSelectedFriend, chatList}:Props) => {
+const ChatsBar: React.FC<Props> = ({ setSelectedFriend, chatList }: Props) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
@@ -45,16 +30,20 @@ const ChatsBar: React.FC<Props> = ({setSelectedFriend, chatList}:Props) => {
       <div className="chat-list">
         {chatList
           .filter((item) => {
-            return item.name.toLowerCase().startsWith(searchQuery);
+            return item.friendUserName.toLowerCase().startsWith(searchQuery);
           })
           .map((chat, index) => (
-            <div className="chat-item" key={index} onClick={(e)=>setSelectedFriend(chat.name)}>
-              <div className="chat-avatar">{chat.name[0]}</div>
+            <div
+              className="chat-item"
+              key={index}
+              onClick={(e) => setSelectedFriend(chat.friendUserName)}
+            >
+              <div className="chat-avatar">{chat.friendUserName[0]}</div>
               <div className="chat-details">
-                <div className="chat-name">{chat.name}</div>
+                <div className="chat-name">{chat.friendUserName}</div>
                 <div className="chat-preview">{chat.lastMessage}</div>
               </div>
-              <div className="chat-time">{chat.time}</div>
+              <div className="chat-time">{chat.lastMessageTime}</div>
             </div>
           ))}
       </div>

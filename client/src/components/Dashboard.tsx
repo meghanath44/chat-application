@@ -7,28 +7,28 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import signalRService from "./signalRService";
 
-
-
 const Dashboard: React.FC = () => {
-  const [connection, setConnection] =useState<signalR.HubConnection>();
+  const [connection, setConnection] = useState<signalR.HubConnection>();
   const [selectedFriend, setSelectedFriend] = useState("");
   const [chatList, setChatList] = useState<any[]>([]);
   const location = useLocation();
   const username = location.state?.username;
 
-  
-  useEffect(()=>{
-    if(username){
+  useEffect(() => {
+    if (username) {
       signalRService.setConnection(username);
-      signalRService.onReceiveChatList((list)=>{
-          setChatList(list);
-        });
-      signalRService.startConnection().then(()=>{
+
+      signalRService.onReceiveChatList((list) => {
+        setChatList(list);
+      });
+      signalRService.startConnection().then(() => {
         setConnection(signalRService.connection);
         signalRService.requestChatList();
       });
     }
-  },[username]);
+  }, [username]);
+
+  useEffect(() => {}, [selectedFriend]);
 
   return (
     <div className="container">
@@ -37,9 +37,14 @@ const Dashboard: React.FC = () => {
         <SideBar></SideBar>
         <div className="main-content">
           <div className="main-body">
-            <ChatsBar setSelectedFriend = {setSelectedFriend} chatList = {chatList}></ChatsBar>
+            <ChatsBar
+              setSelectedFriend={setSelectedFriend}
+              chatList={chatList}
+            ></ChatsBar>
             <ChatWindow
-             selectedFriend = {selectedFriend}></ChatWindow>
+              selectedFriend={selectedFriend}
+              connection={connection}
+            ></ChatWindow>
           </div>
         </div>
       </div>
