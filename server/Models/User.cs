@@ -7,9 +7,23 @@ namespace server.Models
     public class User
     {
         [Key]
-        public string email { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("user_id")]
+        public int UserId { get; set; }
 
+        [Required]
+        [Column("user_name")]
+        public string UserName { get; set; }
+
+        [Required]
+        [Column("email")]
+        public string Email { get; set; }
+
+        [Required]
         [Column("password")]
-        public string password { get; set; }
+        public string Password { get; set; }
+
+        [Column("created_at")]
+        public DateTime CreatedAt { get; set; }
     }
 }
