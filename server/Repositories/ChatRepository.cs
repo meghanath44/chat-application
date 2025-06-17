@@ -13,27 +13,62 @@ namespace server.Repositories
 
         public async Task<List<ChatSummary>> GetUserChats(string username)
         {
-            return new List<ChatSummary>();
             var user = await _dbContext.Users
-                .FirstOrDefaultAsync(u => u.UserName == username);
+                .FirstOrDefaultAsync((u) => ((u.UserName == username) || (u.Email == username)));
+        
 
             if (user == null) return new List<ChatSummary>();
             var userId = user.UserId;
 
-            var chats = await (from m in _dbContext.Messages
-                               where m.SenderId == userId || m.ReceiverId == userId
-                               group m by m.SenderId == userId ? m.ReceiverId : m.SenderId into g
-                               let latestMessage = g.OrderByDescending(m => m.SentAt).FirstOrDefault()
-                               join u in _dbContext.Users
-                                   on (latestMessage.SenderId == userId ? latestMessage.ReceiverId : latestMessage.SenderId)
-                                   equals u.UserId
-                               orderby latestMessage.SentAt descending
-                               select new ChatSummary
-                               {
-                                   FriendUserName = u.UserName,
-                                   LastMessage = latestMessage.MessageText,
-                                   LastMessageTime = latestMessage.SentAt
-                               }).ToListAsync();
+            var messages = await _dbContext.Messages
+     .Where(m => m.SenderId == userId || m.ReceiverId == userId)
+     .ToListAsync(); // Fetch from DB first
+
+            var chats = messages
+                .GroupBy(m => m.SenderId == userId ? m.ReceiverId : m.SenderId)
+                .Select(g =>
+                {
+                    var latestMessage = g.OrderByDescending(m => m.SentAt).First();
+                    var friendId = latestMessage.SenderId == userId ? latestMessage.ReceiverId : latestMessage.SenderId;
+                    return new { latestMessage, friendId };
+                })
+                .Join(_dbContext.Users,
+                      x => x.friendId,
+                      u => u.UserId,
+                      (x, u) => new ChatSummary
+                      {
+                          FriendUserName = u.UserName,
+                          LastMessage = x.latestMessage.MessageText,
+                          LastMessageTime = x.latestMessage.SentAt
+                      })
+                .OrderByDescending(c => c.LastMessageTime)
+                .ToList();
+
+
+            return chats;
+        }
+
+        public async Task<List<Chats>> GetUserChats(string username,string friendUsername)
+        {
+            var user = await _dbContext.Users
+                .FirstOrDefaultAsync((u) => ((u.UserName == username) || (u.Email == username)));
+
+            var fuser = await _dbContext.Users.FirstOrDefaultAsync((u) => ((u.UserName == friendUsername) || (u.Email == friendUsername)));
+
+            if (user == null || fuser == null) return new List<Chats>();
+            var userId = user.UserId;
+            var fuserId = fuser.UserId;
+
+            var messages = await _dbContext.Messages.Where(m => ((m.SenderId == userId && m.ReceiverId == fuserId) || (m.SenderId == fuserId && m.ReceiverId == userId))).ToListAsync();
+            var chats = messages.Select(m =>
+            {
+                return new Chats
+                {
+                    MessageText = m.MessageText,
+                    MessageTime = m.SentAt,
+                    MessageFlag = m.SenderId == userId ? "out" : "in"
+                };
+            }).OrderByDescending(m =>m.MessageTime).ToList();
 
             return chats;
         }
