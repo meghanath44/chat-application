@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-interface User{
-  username : string;
-  password : string
+interface User {
+  username: string;
+  password: string;
 }
 
 const Home: React.FC = () => {
@@ -16,18 +16,18 @@ const Home: React.FC = () => {
   const navigate = useNavigate();
 
   async function addUser() {
-    const response = await fetch('https://localhost:44330/api/user',{
-      method:'POST',
-      headers:{
-        'Content-Type' : 'application/json'
+    const response = await fetch("https://localhost:44330/api/user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        "Email" : email,
-        "Username" : username,
-        "Password" : password,
-        "CreatedAt" : new Date()
+        Email: email,
+        Username: username,
+        Password: password,
+        CreatedAt: new Date(),
       }),
-      mode:'cors'
+      mode: "cors",
     });
     const data = await response.json();
     return data;
@@ -52,15 +52,14 @@ const Home: React.FC = () => {
         setDisplayText("Password mismatch");
         return;
       }
-      addUser().then((data)=>{
-        data.isSuccess?navigate('/dashboard', {state : {username}}):setDisplayText("invalid details");
-    });
+      addUser().then((data) => {
+        data.isSuccess
+          ? navigate("/dashboard", { state: { username } })
+          : setDisplayText("invalid details");
+      });
+    } else {
+      navigate("/dashboard", { state: { username } });
     }
-    else{
-
-      navigate('/dashboard');
-    }
-    
   };
 
   const setStateTo = (t: boolean) => {
