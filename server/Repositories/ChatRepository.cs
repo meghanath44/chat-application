@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using server.Models;
 using server.ViewModels;
 
 namespace server.Repositories
@@ -48,27 +49,28 @@ namespace server.Repositories
             return chats;
         }
 
-        public async Task<List<Chats>> GetUserChats(string username,string friendUsername)
+        public async Task<List<ViewMessage>> GetUserChats(string username,string friendUsername)
         {
             var user = await _dbContext.Users
                 .FirstOrDefaultAsync((u) => ((u.UserName == username) || (u.Email == username)));
 
             var fuser = await _dbContext.Users.FirstOrDefaultAsync((u) => ((u.UserName == friendUsername) || (u.Email == friendUsername)));
 
-            if (user == null || fuser == null) return new List<Chats>();
+            if (user == null || fuser == null) return new List<ViewMessage>();
             var userId = user.UserId;
             var fuserId = fuser.UserId;
 
             var messages = await _dbContext.Messages.Where(m => ((m.SenderId == userId && m.ReceiverId == fuserId) || (m.SenderId == fuserId && m.ReceiverId == userId))).ToListAsync();
             var chats = messages.Select(m =>
             {
-                return new Chats
+                return new ViewMessage
                 {
+                    SenderUsername = (m.SenderId==userId)?username:friendUsername,
+                    ReceiverUsername = (m.SenderId != userId) ? username : friendUsername,
                     MessageText = m.MessageText,
-                    MessageTime = m.SentAt,
-                    MessageFlag = m.SenderId == userId ? "out" : "in"
+                    SentAt = m.SentAt
                 };
-            }).OrderByDescending(m =>m.MessageTime).ToList();
+            }).OrderByDescending(m =>m.SentAt).ToList();
 
             return chats;
         }

@@ -6,6 +6,6 @@ namespace server.Services
     {
         public Task<List<ChatSummary>> GetUserChats(string username);
 
-        public Task<List<Chats>> GetUserChats(string username,string friendUsername);
+        public Task<List<ViewMessage>> GetUserChats(string username,string friendUsername);
     }
 }
