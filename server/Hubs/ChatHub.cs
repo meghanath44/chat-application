@@ -30,6 +30,12 @@ namespace server.Hubs
             await Clients.Caller.SendAsync("ReceiveChatList", chats);
         }
 
+        public async Task GetChat(string friendUsername)
+        {
+            var username = Context.GetHttpContext().Request.Query["username"];
+            var chats = await _chatRepository.GetUserChats(username, friendUsername);
+            await Clients.Caller.SendAsync("ReceiveChat", chats);
+        }
         
     }
 }

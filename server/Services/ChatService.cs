@@ -17,5 +17,10 @@ namespace server.Services
         {
             return _chatRepository.GetUserChats(username);
         }
+
+        public Task<List<Chats>> GetUserChats(string username,string friendUsername)
+        {
+            return _chatRepository.GetUserChats(username, friendUsername);
+        }
     }
 }
