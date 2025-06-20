@@ -3,7 +3,7 @@ import SideBar from "./SideBar";
 import TopBar from "./TopBar";
 import "../Dashboard.css";
 import ChatsBar from "./ChatsBar";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import signalRService from "./signalRService";
 
@@ -11,13 +11,15 @@ const Dashboard: React.FC = () => {
   const [connection, setConnection] = useState<signalR.HubConnection>();
   const [selectedFriend, setSelectedFriend] = useState("");
   const [chatList, setChatList] = useState<any[]>([]);
+  const [messages, setMessages] =useState<Map<string,Set<any>>>(new Map());
   const location = useLocation();
   const username = location.state?.username;
+  const isConnectedRef = useRef(false);
 
   useEffect(() => {
-    if (username) {
+    if (username && !isConnectedRef.current) {
+      isConnectedRef.current = true;
       signalRService.setConnection(username);
-
       signalRService.onReceiveChatList((list) => {
         setChatList(list);
       });
@@ -27,8 +29,6 @@ const Dashboard: React.FC = () => {
       });
     }
   }, [username]);
-
-  useEffect(() => {}, [selectedFriend]);
 
   return (
     <div className="container">
@@ -44,6 +44,8 @@ const Dashboard: React.FC = () => {
             <ChatWindow
               selectedFriend={selectedFriend}
               connection={connection}
+              messages={messages}
+              setMessages={setMessages}
             ></ChatWindow>
           </div>
         </div>

@@ -1,37 +1,84 @@
 import { useEffect, useRef, useState } from "react";
 import "../Dashboard.css";
+import { useLocation } from "react-router-dom";
 import signalRService from "./signalRService";
 
 type Props = {
   selectedFriend: string;
   connection: signalR.HubConnection | undefined;
+  messages: Map<string,Set<any>>
+  setMessages: React.Dispatch<React.SetStateAction<Map<string,Set<any>>>>;
 };
 
-const ChatWindow: React.FC<Props> = ({ selectedFriend, connection }: Props) => {
-  const [messages, setMessages] = useState<any[]>([]);
+const ChatWindow: React.FC<Props> = ({ selectedFriend, connection, messages, setMessages}: Props) => {
+  const [selectedFriendMessages, setSelectedFriendMessages] = useState<Set<any>>(new Set<any>());
   const [input, setInput] = useState("");
   const bottomRef = useRef<HTMLDivElement | null>(null);
   signalRService.connection = connection;
+  const location=useLocation();
+  const username = location.state?.username;
+  const messagesRef = useRef<Map<string, Set<any>>>(new Map());
+
+  useEffect(()=>{
+    messagesRef.current=messages;
+  },[messages]);
+
+  useEffect(()=>{
+    const chatHandler = (list:any[]) => {
+      if(list.length>0){
+        const friendUsername = list[0].senderUsername!=username?list[0].senderUsername:list[0].receiverUsername;
+        let msgs = new Map(messagesRef.current);
+        msgs.set(friendUsername,new Set(list));
+        setMessages(msgs);
+      }
+    };
+
+    const messageHandler = (chat : any)=>{
+      if(chat!=null){
+        let msgs=new Set<any>();
+        if(messagesRef.current.has(chat.senderUsername)){
+          msgs=messagesRef.current.get(chat.senderUsername)??new Set<any>();
+        }
+        setMessages(new Map(messagesRef.current).set(chat.senderUsername,msgs.add(chat)));
+      }
+    };
+
+    signalRService.onReceiveChat(chatHandler);
+    signalRService.onReceiveMessage(messageHandler);
+
+    return () => {
+    signalRService.offReceiveChat(chatHandler);
+    signalRService.offReceiveMessage(messageHandler);
+  };
+  },[connection]);
 
   useEffect(() => {
-    signalRService.onReceiveChat((list) => {
-      setMessages(list);
-    });
     if (signalRService.connection?.state) {
-      signalRService.requestChat(selectedFriend);
+      if(messages.has(selectedFriend)){
+        setSelectedFriendMessages(messages.get(selectedFriend)??new Set<any>());
+      }
+      else signalRService.requestChat(selectedFriend);
     }
   }, [selectedFriend]);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+     let msgs=messages.get(selectedFriend);
+     if(msgs){
+      setSelectedFriendMessages(new Set(msgs));
+     }
   }, [messages]);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [selectedFriendMessages]);
 
   const handleSend = () => {
     if (input.trim() !== "") {
-      setMessages([
-        ...messages,
-        { messageFlag: "out", messageText: input, messageTime: true },
-      ]);
+      if (signalRService.connection?.state) {
+      signalRService.sendMessage(selectedFriend,input.trim());
+      }
+      let msgs=messages.get(selectedFriend)??new Set<any>();
+      setMessages(new Map(messages).set(selectedFriend,msgs.add({ receiverUsername: selectedFriend, senderUsername:username, messageText: input, messageTime: new Date()})));
       setInput("");
     }
   };
@@ -57,11 +104,11 @@ const ChatWindow: React.FC<Props> = ({ selectedFriend, connection }: Props) => {
             </div>
           </div>
           <div className="messages">
-            {messages.map((msg, idx) => (
+            {Array.from(selectedFriendMessages).map((msg, idx) => (
               <div
                 key={idx}
                 className={`message-bubble ${
-                  msg.messageFlag == "out" ? "mine" : "theirs"
+                  msg.receiverUsername == selectedFriend ? "mine" : "theirs"
                 }`}
               >
                 {msg.messageText}
