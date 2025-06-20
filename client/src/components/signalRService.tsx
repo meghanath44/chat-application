@@ -45,6 +45,31 @@ class signalRService {
       this.connection.on("ReceiveChat", callback);
     }
   };
+
+  public sendMessage = (username : string, msg:string)=>{
+    if(this.connection){
+      console.log("semdMessage");
+      this.connection.invoke("SendMessageToFriend",username,msg).catch(err=>console.log(err));
+    }
+  }
+
+  public onReceiveMessage = (callback:(chat:any)=> void) => {
+    if (this.connection) {
+      this.connection.on("ReceiveMessage", callback);
+    }
+  }
+
+  public offReceiveMessage = (callback:(chat:any)=> void) => {
+    if (this.connection) {
+      this.connection.off("ReceiveMessage", callback);
+    }
+  }
+
+  public offReceiveChat = (callback:(chat:any)=> void) => {
+    if (this.connection) {
+      this.connection.off("ReceiveChat", callback);
+    }
+  }
 }
 
 export default new signalRService();
