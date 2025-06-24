@@ -1,0 +1,71 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #1877f2;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-modal {
+  position: relative;
+  width: 95%;
+  height: 95%;
+  /*background-color: #1877f2; */
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.modal-header {
+  text-align: center;
+  color: white;
+  font-size: 1.5rem;
+  padding: 12px;
+  background-color: black;
+}
+
+.video-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2em;
+}
+
+.player{
+    background-color: black;
+    width: 100%;
+    height: 100%;
+}
+
+.video-controls {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 16px;
+  background-color: #222;
+}
+
+.call-btn {
+  font-size: 20px;
+  padding: 12px;
+  border: none;
+  border-radius: 50%;
+  background-color: #444;
+  color: white;
+  cursor: pointer;
+}
+
+.call-btn:hover {
+  background-color: #666;
+}
+
+.call-btn.end {
+  background-color: red;
+}

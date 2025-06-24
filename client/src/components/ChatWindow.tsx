@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "../Dashboard.css";
 import { useLocation } from "react-router-dom";
 import signalRService from "./signalRService";
+import VideoCallModal from "./VideoCallModal";
 
 type Props = {
   selectedFriend: string;
@@ -13,6 +14,7 @@ type Props = {
 const ChatWindow: React.FC<Props> = ({ selectedFriend, connection, messages, setMessages}: Props) => {
   const [selectedFriendMessages, setSelectedFriendMessages] = useState<Set<any>>(new Set<any>());
   const [input, setInput] = useState("");
+  const [inVideoCall, setInVideoCall] =useState(false);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   signalRService.connection = connection;
   const location=useLocation();
@@ -83,6 +85,14 @@ const ChatWindow: React.FC<Props> = ({ selectedFriend, connection, messages, set
     }
   };
 
+  const startVideoCall = () =>{
+    setInVideoCall(true);
+  }
+
+  const endVideoCall = () =>{
+
+  }
+
   return (
     <div className="window">
       {selectedFriend == "" ? (
@@ -95,7 +105,7 @@ const ChatWindow: React.FC<Props> = ({ selectedFriend, connection, messages, set
               <div>{selectedFriend}</div>
             </div>
             <div className="chat-desc-right">
-              <div className="video-icon" onClick={() => alert("Video call")}>
+              <div className="video-icon" onClick={() => startVideoCall()}>
                 📹
               </div>
               <div className="audio-icon" onClick={() => alert("Audio call")}>
@@ -127,9 +137,9 @@ const ChatWindow: React.FC<Props> = ({ selectedFriend, connection, messages, set
             />
             <button onClick={handleSend}>Send</button>
           </div>
+          {inVideoCall && (<VideoCallModal friendName={selectedFriend} onEndCall={() => endVideoCall()}/>)}
         </div>
       )}
-      ;
     </div>
   );
 };
