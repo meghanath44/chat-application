@@ -21,6 +21,11 @@ namespace server.Repositories
         {
             return new Result() { isSuccess = false };  
         }
+
+        public User GetUser(string username)
+        {
+            return _dbContext.Users.Where<User>(x => x.UserName == username).FirstOrDefault<User>();
+        }
     }
 }
  

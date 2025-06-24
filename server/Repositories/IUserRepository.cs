@@ -7,5 +7,7 @@ namespace server.Repositories
     {
         public Result AddUser(User user);
         public Result ValidateUser(string username, string password);
+
+        public User GetUser(string username);
     }
 }
