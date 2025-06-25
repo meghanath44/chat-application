@@ -14,7 +14,7 @@ type Props = {
 const ChatWindow: React.FC<Props> = ({ selectedFriend, connection, messages, setMessages}: Props) => {
   const [selectedFriendMessages, setSelectedFriendMessages] = useState<Set<any>>(new Set<any>());
   const [input, setInput] = useState("");
-  const [inVideoCall, setInVideoCall] =useState(false);
+  const [callFlag, setCallFlag] = useState("");
   const bottomRef = useRef<HTMLDivElement | null>(null);
   signalRService.connection = connection;
   const location=useLocation();
@@ -86,11 +86,11 @@ const ChatWindow: React.FC<Props> = ({ selectedFriend, connection, messages, set
   };
 
   const startVideoCall = () =>{
-    setInVideoCall(true);
+    setCallFlag("out");
   }
 
   const endVideoCall = () =>{
-
+    setCallFlag("");
   }
 
   return (
@@ -101,7 +101,7 @@ const ChatWindow: React.FC<Props> = ({ selectedFriend, connection, messages, set
         <div className="chat-window">
           <div className="chat-desc">
             <div className="chat-desc-left">
-              <div className="chat-avatar"></div>
+              <div className="chat-avatar">{selectedFriend[0]}</div>
               <div>{selectedFriend}</div>
             </div>
             <div className="chat-desc-right">
@@ -137,7 +137,7 @@ const ChatWindow: React.FC<Props> = ({ selectedFriend, connection, messages, set
             />
             <button onClick={handleSend}>Send</button>
           </div>
-          {inVideoCall && (<VideoCallModal friendName={selectedFriend} onEndCall={() => endVideoCall()}/>)}
+          <VideoCallModal callFlag={callFlag} setCallFlag={setCallFlag} connection={connection} friendName={selectedFriend} onEndCall={() => endVideoCall()}/>
         </div>
       )}
     </div>
