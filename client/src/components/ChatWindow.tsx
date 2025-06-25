@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "../Dashboard.css";
 import { useLocation } from "react-router-dom";
 import signalRService from "./signalRService";
+import VideoCallModal from "./VideoCallModal";
 
 type Props = {
   selectedFriend: string;
@@ -13,6 +14,7 @@ type Props = {
 const ChatWindow: React.FC<Props> = ({ selectedFriend, connection, messages, setMessages}: Props) => {
   const [selectedFriendMessages, setSelectedFriendMessages] = useState<Set<any>>(new Set<any>());
   const [input, setInput] = useState("");
+  const [callFlag, setCallFlag] = useState("");
   const bottomRef = useRef<HTMLDivElement | null>(null);
   signalRService.connection = connection;
   const location=useLocation();
@@ -83,6 +85,14 @@ const ChatWindow: React.FC<Props> = ({ selectedFriend, connection, messages, set
     }
   };
 
+  const startVideoCall = () =>{
+    setCallFlag("out");
+  }
+
+  const endVideoCall = () =>{
+    setCallFlag("");
+  }
+
   return (
     <div className="window">
       {selectedFriend == "" ? (
@@ -91,11 +101,11 @@ const ChatWindow: React.FC<Props> = ({ selectedFriend, connection, messages, set
         <div className="chat-window">
           <div className="chat-desc">
             <div className="chat-desc-left">
-              <div className="chat-avatar"></div>
+              <div className="chat-avatar">{selectedFriend[0]}</div>
               <div>{selectedFriend}</div>
             </div>
             <div className="chat-desc-right">
-              <div className="video-icon" onClick={() => alert("Video call")}>
+              <div className="video-icon" onClick={() => startVideoCall()}>
                 📹
               </div>
               <div className="audio-icon" onClick={() => alert("Audio call")}>
@@ -127,9 +137,9 @@ const ChatWindow: React.FC<Props> = ({ selectedFriend, connection, messages, set
             />
             <button onClick={handleSend}>Send</button>
           </div>
+          <VideoCallModal callFlag={callFlag} setCallFlag={setCallFlag} connection={connection} friendName={selectedFriend} onEndCall={() => endVideoCall()}/>
         </div>
       )}
-      ;
     </div>
   );
 };
