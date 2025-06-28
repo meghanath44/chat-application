@@ -46,6 +46,12 @@ namespace server.Hubs
             return base.OnConnectedAsync();
         }
 
+        public async Task EndCall(string targetUser)
+        {
+            var user = _connectionManager.GetConnectionId(targetUser);
+            await Clients.Client(user).SendAsync("EndCall");
+        }
+
         public override Task OnDisconnectedAsync(Exception? exception)
         {
             _connectionManager.RemoveConnection(Context.ConnectionId);
