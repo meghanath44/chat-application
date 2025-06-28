@@ -30,6 +30,7 @@ builder.Services.AddScoped<IChatRepository, ChatRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
+builder.Services.AddSingleton<IUserConnectionManager, UserConnectionManager>();
 
 
 

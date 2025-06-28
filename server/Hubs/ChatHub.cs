@@ -10,20 +10,46 @@ namespace server.Hubs
     {
         private readonly IChatRepository _chatRepository;
         private readonly IUserRepository _userRepository;
-        private readonly Dictionary<string, string> _usernameMap;
-        public ChatHub(IChatRepository chatRepository, IUserRepository userRepository)
+        private readonly IUserConnectionManager _connectionManager;
+        public ChatHub(IChatRepository chatRepository, IUserRepository userRepository, IUserConnectionManager connectionManager)
         {
             _chatRepository = chatRepository;
             _userRepository = userRepository;
-            _usernameMap = new Dictionary<string, string>();
+            _connectionManager = connectionManager;
         }
-        public override async Task OnConnectedAsync()
+
+        public async Task SendOffer(string targetUser, string offer)
         {
-            var username = Context.GetHttpContext().Request.Query["username"];
-            Console.WriteLine($"User connected: {username}");
-            _usernameMap[username] = Context.UserIdentifier;
-            //var chats = await _chatRepository.GetUserChats(username);
-           // await Clients.Caller.SendAsync("ReceiveChatList", chats);
+            var user = _connectionManager.GetConnectionId(targetUser);
+            await Clients.Client(user).SendAsync("ReceiveOffer", Context.GetHttpContext().Request.Query["username"].ToString(), offer);
+        }
+
+        public async Task SendAnswer(string targetUser, string answer)
+        {
+            var user = _connectionManager.GetConnectionId(targetUser);
+            await Clients.Client(user).SendAsync("ReceiveAnswer", Context.GetHttpContext().Request.Query["username"].ToString(), answer);
+        }
+
+        public async Task SendIceCandidate(string targetUser, string candidate)
+        {
+            var user = _connectionManager.GetConnectionId(targetUser);
+            await Clients.Client(user).SendAsync("ReceiveIceCandidate", Context.GetHttpContext().Request.Query["username"], candidate);
+        }
+        public override Task OnConnectedAsync()
+        {
+            var username = Context.GetHttpContext()?.Request.Query["username"];
+            if (!string.IsNullOrEmpty(username))
+            {
+                _connectionManager.AddUser(username, Context.ConnectionId);
+                Console.WriteLine($"Connected: {username} -> {Context.ConnectionId}");
+            }
+            return base.OnConnectedAsync();
+        }
+
+        public override Task OnDisconnectedAsync(Exception? exception)
+        {
+            _connectionManager.RemoveConnection(Context.ConnectionId);
+            return base.OnDisconnectedAsync(exception);
         }
 
         public async Task GetChatList()
@@ -52,7 +78,8 @@ namespace server.Hubs
                 MessageText = message,
                 SentAt = DateTime.Now
             };
-            await Clients.User(_usernameMap.GetValueOrDefault(friendUsername)).SendAsync("ReceiveMessage", chat);
+            var user = _connectionManager.GetConnectionId(friendUsername);
+            await Clients.Client(user).SendAsync("ReceiveMessage", chat);
         }
     }
 }
