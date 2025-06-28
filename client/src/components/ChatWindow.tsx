@@ -9,12 +9,13 @@ type Props = {
   connection: signalR.HubConnection | undefined;
   messages: Map<string,Set<any>>
   setMessages: React.Dispatch<React.SetStateAction<Map<string,Set<any>>>>;
+  setCallFlag : (state :string)=>void
 };
 
-const ChatWindow: React.FC<Props> = ({ selectedFriend, connection, messages, setMessages}: Props) => {
+const ChatWindow: React.FC<Props> = ({ selectedFriend, connection, messages, setMessages, setCallFlag}: Props) => {
   const [selectedFriendMessages, setSelectedFriendMessages] = useState<Set<any>>(new Set<any>());
   const [input, setInput] = useState("");
-  const [callFlag, setCallFlag] = useState("");
+
   const bottomRef = useRef<HTMLDivElement | null>(null);
   signalRService.connection = connection;
   const location=useLocation();
@@ -85,14 +86,6 @@ const ChatWindow: React.FC<Props> = ({ selectedFriend, connection, messages, set
     }
   };
 
-  const startVideoCall = () =>{
-    setCallFlag("out");
-  }
-
-  const endVideoCall = () =>{
-    setCallFlag("");
-  }
-
   return (
     <div className="window">
       {selectedFriend == "" ? (
@@ -105,7 +98,7 @@ const ChatWindow: React.FC<Props> = ({ selectedFriend, connection, messages, set
               <div>{selectedFriend}</div>
             </div>
             <div className="chat-desc-right">
-              <div className="video-icon" onClick={() => startVideoCall()}>
+              <div className="video-icon" onClick={() => setCallFlag("out")}>
                 📹
               </div>
               <div className="audio-icon" onClick={() => alert("Audio call")}>
@@ -137,7 +130,6 @@ const ChatWindow: React.FC<Props> = ({ selectedFriend, connection, messages, set
             />
             <button onClick={handleSend}>Send</button>
           </div>
-          <VideoCallModal callFlag={callFlag} setCallFlag={setCallFlag} connection={connection} friendName={selectedFriend} onEndCall={() => endVideoCall()}/>
         </div>
       )}
     </div>

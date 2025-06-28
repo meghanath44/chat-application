@@ -1,31 +1,29 @@
 import React, { useEffect, useRef, useState } from "react";
 import "../VideoCallModal.css";
-import type { HubConnection } from "@microsoft/signalr";
 
 type VideoCallModalProps = {
   callFlag: string;
   setCallFlag: (callFlag: string) => void;
   connection: signalR.HubConnection | undefined;
-  friendName: string;
-  onEndCall: () => void;
+  selectedFriend: string;
 };
 
 const VideoCallModal: React.FC<VideoCallModalProps> = ({
   callFlag,
   setCallFlag,
   connection,
-  friendName,
-  onEndCall,
+  selectedFriend,
 }) => {
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
   const [videoFlag, setVideoFlag] = useState(true);
   const [audioFlag, setAudioFlag] = useState(true);
+  const [friendName, setFriendName] = useState(selectedFriend);
+
   const localVideoRef = useRef<HTMLVideoElement | null>(null);
   const remoteVideoRef = useRef<HTMLVideoElement | null>(null);
   const peerConnectionRef = useRef<RTCPeerConnection | null>(null);
-  const remoteStreamRef = useRef<MediaStream | null>(null);
-  const localStreamRef = useRef<MediaStream | null>(null);
+  const callFlagRef = useRef<string>(callFlag);
   const isConnectedRef = useRef(false);
 
   const iceServers = [
@@ -37,147 +35,230 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
     },
   ];
 
-  const setupMedia = async () => {
-    try {
-      if (localStreamRef.current) {
-        localStreamRef.current.getTracks().forEach((track) => track.stop());
-      }
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: false,
-      });
-      localStreamRef.current = stream;
-      setLocalStream(stream);
-    } catch (err) {
-      console.log("Error accessing media devices.", err);
-    }
-  };
+  useEffect(() => {
+    callFlagRef.current = callFlag;
+  }, [callFlag]);
+
+  useEffect(() => {
+    setFriendName(selectedFriend);
+  }, [selectedFriend]);
 
   useEffect(() => {
     if (!isConnectedRef.current) {
       isConnectedRef.current = true;
-      const iceConfig: RTCConfiguration = {
-        iceServers,
-      };
-      const peerConnection = new RTCPeerConnection(iceConfig);
-      peerConnectionRef.current = peerConnection;
-
       if (connection) {
-        connection.on("ReceiveOffer", async (sender: string, offer) => {
-          setCallFlag("in");
-          await peerConnection.setRemoteDescription(
-            new RTCSessionDescription(JSON.parse(offer))
-          );
-          const answer = await peerConnection.createAnswer();
-          await peerConnection.setLocalDescription(answer);
-          const ans = JSON.stringify(answer);
-          const sen = sender;
-          connection.invoke("SendAnswer", sen, ans);
+        connection.on("ReceiveOffer", async (sender, offer) => {
+          console.log("Callee: Offer received from caller.");
+          setFriendName(sender);
+          setCallFlag("pending");
+          callFlagRef.current = "pending";
+
+          const start = Date.now();
+          while (
+            callFlagRef.current == "pending" &&
+            Date.now() - start < 60000
+          ) {
+            await new Promise((res) => setTimeout(res, 500));
+          }
+
+          if (callFlagRef.current == "accept") {
+            // 1. Create Peer Connection
+            const peerConnection = new RTCPeerConnection({ iceServers });
+            peerConnectionRef.current = peerConnection;
+            console.log("Callee: Created RTCPeerConnection.");
+
+            // 2. Setup ICE and ontrack handlers
+            peerConnection.onicecandidate = (event) => {
+              if (event.candidate && connection) {
+                connection.invoke(
+                  "SendIceCandidate",
+                  sender,
+                  JSON.stringify(event.candidate)
+                );
+                console.log("Callee: Sent ICE candidate to caller.");
+              }
+            };
+
+            const rStream = new MediaStream();
+            setRemoteStream(rStream);
+            peerConnection.ontrack = (event) => {
+              event.streams[0]
+                .getTracks()
+                .forEach((track) => rStream.addTrack(track));
+              console.log("Callee: Added remote track.");
+            };
+
+            // 3. Get local media
+            const localStream = await navigator.mediaDevices.getUserMedia({
+              video: true,
+              audio: false,
+            });
+            setLocalStream(localStream);
+            localStream
+              .getTracks()
+              .forEach((track) => peerConnection.addTrack(track, localStream));
+            console.log("Callee: Local media added to peer connection.");
+
+            // 4. Set remote description (Offer)
+            await peerConnection.setRemoteDescription(
+              new RTCSessionDescription(JSON.parse(offer))
+            );
+            console.log("Callee: Set remote description (Offer).");
+
+            // 5. Create Answer
+            const answer = await peerConnection.createAnswer();
+            await peerConnection.setLocalDescription(answer);
+            console.log("Callee: Created and set local description (Answer).");
+
+            // 6. Send Answer to Caller
+            connection.invoke("SendAnswer", sender, JSON.stringify(answer));
+            console.log("Callee: Sent answer to caller.");
+          } else {
+            setCallFlag("");
+          }
         });
 
         connection.on("ReceiveAnswer", async (sender, answer) => {
-          await peerConnection.setRemoteDescription(
+          await peerConnectionRef.current?.setRemoteDescription(
             new RTCSessionDescription(JSON.parse(answer))
           );
         });
 
         connection.on("ReceiveIceCandidate", async (sender, candidate) => {
           try {
-            await peerConnection.addIceCandidate(
+            await peerConnectionRef.current?.addIceCandidate(
               new RTCIceCandidate(JSON.parse(candidate))
             );
           } catch (err) {
             console.error("Error adding received ice candidate", err);
           }
         });
+
+        connection.on("EndCall", () => {
+          peerConnectionRef.current?.close();
+          peerConnectionRef.current = null;
+
+          localStream?.getTracks().forEach((track) => track.stop());
+          remoteStream?.getTracks().forEach((track) => track.stop());
+
+          setLocalStream(null);
+          setRemoteStream(null);
+          setCallFlag("");
+        });
       }
     }
   }, []);
 
   useEffect(() => {
-    setupMedia();
+    if (callFlag === "out") {
+      // 1. Get Local Media
+      const setMedia = async () => {
+        const localStream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: false,
+        });
+        setLocalStream(localStream);
+        console.log("Caller: Local media stream obtained.");
 
-    localStreamRef.current?.getTracks().forEach((track) => {
-        if (peerConnectionRef.current && localStreamRef.current)
-          peerConnectionRef.current.addTrack(track, localStreamRef.current);
-      });
+        // 2. Create PeerConnection
+        const peerConnection = new RTCPeerConnection({ iceServers });
+        peerConnectionRef.current = peerConnection;
+        console.log("Caller: RTCPeerConnection created.");
 
-      const rStream = new MediaStream();
-      remoteStreamRef.current = rStream;
-      setRemoteStream(rStream);
+        // 3. Add Local Tracks
+        localStream.getTracks().forEach((track) => {
+          peerConnection.addTrack(track, localStream);
+          console.log(
+            `Caller: Added local ${track.kind} track to peer connection.`
+          );
+        });
 
-      if (peerConnectionRef.current) {
-        peerConnectionRef.current.ontrack = (event) => {
+        // 4. Create Remote Media Stream
+        const remoteStream = new MediaStream();
+        setRemoteStream(remoteStream);
+        peerConnection.ontrack = (event) => {
           event.streams[0].getTracks().forEach((track) => {
-            remoteStreamRef.current?.addTrack(track);
+            remoteStream.addTrack(track);
           });
-          setRemoteStream(remoteStreamRef.current);
+          console.log("Caller: Remote track added.");
         };
-      }
 
-    if (callFlag === "out" && peerConnectionRef.current)
-      createOffer(peerConnectionRef.current, connection);
+        // 5. Handle ICE Candidates
+        peerConnection.onicecandidate = (event) => {
+          if (event.candidate && connection) {
+            connection.invoke(
+              "SendIceCandidate",
+              friendName,
+              JSON.stringify(event.candidate)
+            );
+            console.log("Caller: Sent ICE candidate.");
+          }
+        };
+
+        // 6. Create and Send Offer
+        const offer = await peerConnection.createOffer();
+        await peerConnection.setLocalDescription(offer);
+        console.log("Caller: Offer created and local description set.");
+
+        if (connection) {
+          await connection.invoke(
+            "SendOffer",
+            friendName,
+            JSON.stringify(offer)
+          );
+          console.log("Caller: Offer sent via SignalR.");
+        }
+      };
+      setMedia();
+    }
   }, [callFlag]);
 
   useEffect(() => {
-    if (localVideoRef.current) {
-      localVideoRef.current.srcObject = localStreamRef.current;
+    if (localVideoRef.current && localStream) {
+      localVideoRef.current.srcObject = localStream;
     }
-    if (remoteVideoRef.current) {
-      remoteVideoRef.current.srcObject = remoteStreamRef.current;
+  }, [localStream]);
+
+  useEffect(() => {
+    if (remoteVideoRef.current && remoteStream) {
+      remoteVideoRef.current.srcObject = remoteStream;
     }
-  }, [localStreamRef.current, remoteStreamRef.current]);
+  }, [remoteStream]);
 
-  let createOffer = async (
-    peerConnection: RTCPeerConnection,
-    connection: HubConnection | undefined
-  ) => {
+  const onEndCall = () => {
+    peerConnectionRef.current?.close();
+    peerConnectionRef.current = null;
 
-    peerConnection.onicecandidate = (event) => {
-      if (event.candidate && connection) {
-        connection.invoke(
-          "SendIceCandidate",
-          friendName,
-          JSON.stringify(event.candidate)
-        );
-        console.log("ice candidates", event.candidate);
-      } else {
-        console.log("All ICE candidates have been gathered");
-      }
-    };
+    localStream?.getTracks().forEach((track) => track.stop());
+    remoteStream?.getTracks().forEach((track) => track.stop());
 
+    setLocalStream(null);
+    setRemoteStream(null);
+    setCallFlag("");
 
-    let offer = await peerConnection.createOffer();
-    await peerConnection.setLocalDescription(offer);
-    if (connection) {
-      connection.invoke("SendOffer", friendName, JSON.stringify(offer));
-      console.log("offer", offer);
-    }
+    connection?.invoke("EndCall", friendName);
   };
 
-  return callFlag === "" ? (
-    <div></div>
-  ) : (
+  return callFlag === "" ? null : (
     <div className="modal-overlay">
-      <div className="video-modal">
-        <div className="modal-header">{friendName}</div>
-        <div className="video-content">
-          <video
-            ref={remoteVideoRef}
-            className="friend-video player"
-            autoPlay
-            playsInline
-            muted={false}
-          ></video>
-          <video
-            ref={localVideoRef}
-            className="your-video player"
-            autoPlay
-            playsInline
-            muted={false}
-          ></video>
-        </div>
-        {callFlag == "out" ? (
+      {callFlag == "out" || callFlag == "accept" ? (
+        <div className="video-modal">
+          <div className="modal-header">{friendName}</div>
+          <div className="video-content">
+            <video
+              ref={remoteVideoRef}
+              className="friend-video player"
+              autoPlay
+              playsInline
+            ></video>
+            <video
+              ref={localVideoRef}
+              className="your-video player"
+              autoPlay
+              playsInline
+              muted
+            ></video>
+          </div>
           <div className="video-controls">
             <button
               className="call-btn"
@@ -191,19 +272,38 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
             >
               🎥
             </button>
-            <button className="call-btn end" onClick={onEndCall}>
+            <button className="call-btn end" onClick={() => onEndCall()}>
               ❌
             </button>
           </div>
-        ) : (
+        </div>
+      ) : (
+        <div className="video-modal">
+          <div className="modal-header">{friendName}</div>
+          <div className="single-video-content">
+            <video
+              ref={localVideoRef}
+              className="your-video player"
+              autoPlay
+              playsInline
+              muted
+            ></video>
+          </div>
           <div className="video-controls">
-            <button className="call-btn accept">🎤</button>
-            <button className="call-btn end" onClick={onEndCall}>
+            <button
+              className="call-btn accept"
+              onClick={() => {
+                setCallFlag("accept");
+              }}
+            >
+              🎤
+            </button>
+            <button className="call-btn end" onClick={() => onEndCall()}>
               ❌
             </button>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
