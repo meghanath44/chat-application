@@ -24,10 +24,10 @@ namespace server.Hubs
             await Clients.Client(user).SendAsync("ReceiveOffer", Context.GetHttpContext().Request.Query["username"].ToString(), offer);
         }
 
-        public async Task SendAnswer(string targetUser, string answer)
+        public async Task SendAnswer(string targetUser, string answer, long time)
         {
             var user = _connectionManager.GetConnectionId(targetUser);
-            await Clients.Client(user).SendAsync("ReceiveAnswer", Context.GetHttpContext().Request.Query["username"].ToString(), answer);
+            await Clients.Client(user).SendAsync("ReceiveAnswer", Context.GetHttpContext().Request.Query["username"].ToString(), answer, time);
         }
 
         public async Task SendIceCandidate(string targetUser, string candidate)
