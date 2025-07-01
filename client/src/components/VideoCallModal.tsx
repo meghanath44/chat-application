@@ -26,6 +26,10 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
   const callFlagRef = useRef<string>(callFlag);
   const isConnectedRef = useRef(false);
 
+  const [callDuration, setCallDuration] = useState(0); // seconds
+  const callStartTimeRef = useRef<number | null>(null);
+  const timerRef = useRef<number | null>(null);
+
   const iceServers = [
     { urls: "stun:stun.l.google.com:19302" },
     {
@@ -110,19 +114,32 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
             await peerConnection.setLocalDescription(answer);
             console.log("Callee: Created and set local description (Answer).");
 
+            var callStartTime = Date.now();
+
             // 6. Send Answer to Caller
-            connection.invoke("SendAnswer", sender, JSON.stringify(answer));
+            connection.invoke(
+              "SendAnswer",
+              sender,
+              JSON.stringify(answer),
+              callStartTime
+            );
             console.log("Callee: Sent answer to caller.");
+
+            setCallTimer(callStartTime);
           } else {
-            setCallFlag("");
+            onEndCall();
           }
         });
 
-        connection.on("ReceiveAnswer", async (sender, answer) => {
-          await peerConnectionRef.current?.setRemoteDescription(
-            new RTCSessionDescription(JSON.parse(answer))
-          );
-        });
+        connection.on(
+          "ReceiveAnswer",
+          async (sender, answer, callStartTime) => {
+            await peerConnectionRef.current?.setRemoteDescription(
+              new RTCSessionDescription(JSON.parse(answer))
+            );
+            setCallTimer(callStartTime);
+          }
+        );
 
         connection.on("ReceiveIceCandidate", async (sender, candidate) => {
           try {
@@ -135,6 +152,12 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
         });
 
         connection.on("EndCall", () => {
+          if (timerRef.current) {
+            clearInterval(timerRef.current);
+            timerRef.current = null;
+          }
+          callStartTimeRef.current = null;
+          setCallDuration(0);
           peerConnectionRef.current?.close();
           peerConnectionRef.current = null;
 
@@ -146,6 +169,19 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
           setCallFlag("");
         });
       }
+
+      const setCallTimer = (time: number) => {
+        callStartTimeRef.current = time;
+
+        timerRef.current = setInterval(() => {
+          if (callStartTimeRef.current) {
+            const elapsed = Math.floor(
+              (Date.now() - callStartTimeRef.current) / 1000
+            );
+            setCallDuration(elapsed); // updates every second
+          }
+        }, 1000);
+      };
     }
   }, []);
 
@@ -226,6 +262,13 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
   }, [remoteStream]);
 
   const onEndCall = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    callStartTimeRef.current = null;
+    setCallDuration(0);
+
     peerConnectionRef.current?.close();
     peerConnectionRef.current = null;
 
@@ -243,21 +286,34 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
     <div className="modal-overlay">
       {callFlag == "out" || callFlag == "accept" ? (
         <div className="video-modal">
-          <div className="modal-header">{friendName}</div>
+          <div className="modal-header">
+            {callDuration == 0
+              ? "Ringing...."
+              : `Duration: ${String(Math.floor(callDuration / 60)).padStart(
+                  2,
+                  "0"
+                )}:${String(callDuration % 60).padStart(2, "0")}`}
+          </div>
           <div className="video-content">
-            <video
-              ref={remoteVideoRef}
-              className="friend-video player"
-              autoPlay
-              playsInline
-            ></video>
-            <video
-              ref={localVideoRef}
-              className="your-video player"
-              autoPlay
-              playsInline
-              muted
-            ></video>
+            <div className="video-wrapper">
+              <video
+                ref={remoteVideoRef}
+                className="friend-video player"
+                autoPlay
+                playsInline
+              ></video>
+              <div className="video-label">{friendName}</div>
+            </div>
+            <div className="video-wrapper">
+              <video
+                ref={localVideoRef}
+                className="your-video player"
+                autoPlay
+                playsInline
+                muted
+              ></video>
+              <div className="video-label">You</div>
+            </div>
           </div>
           <div className="video-controls">
             <button
@@ -296,10 +352,10 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
                 setCallFlag("accept");
               }}
             >
-              🎤
+              Answer
             </button>
             <button className="call-btn end" onClick={() => onEndCall()}>
-              ❌
+              Decline
             </button>
           </div>
         </div>
