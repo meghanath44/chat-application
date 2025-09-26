@@ -1,5 +1,6 @@
 ﻿using server.Models;
 using server.ViewModels;
+using System.Linq;
 
 namespace server.Repositories
 {
@@ -19,7 +20,8 @@ namespace server.Repositories
 
         public Result ValidateUser(string username, string password)
         {
-            return new Result() { isSuccess = false };  
+            int count = _dbContext.Users.Where<User>(u => u.UserName == username && u.Password == password).Count();
+            return new Result() { isSuccess = (count==1) };  
         }
 
         public User GetUser(string username)
