@@ -33,17 +33,17 @@ const Home: React.FC = () => {
     return data;
   }
 
-  // async function validate(){
-  //   const response = await fetch(`https://localhost:44330/api/user?username=${username}`,{
-  //     method:'GET',
-  //     headers:{
-  //       'Content-Type' : 'application/json'
-  //     },
-  //     mode:'cors'
-  //   });
-  //   const data = await response.json();
-  //   return data;
-  // }
+  async function validate(){
+    const response = await fetch(`https://localhost:44330/api/user?username=${username}&password=${password}`,{
+      method:'GET',
+      headers:{
+        'Content-Type' : 'application/json'
+      },
+      mode:'cors'
+    });
+    const data = await response.json();
+    return data;
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,10 +55,12 @@ const Home: React.FC = () => {
       addUser().then((data) => {
         data.isSuccess
           ? navigate("/dashboard", { state: { username } })
-          : setDisplayText("invalid details");
+          : setDisplayText("Invalid details");
       });
     } else {
-      navigate("/dashboard", { state: { username } });
+      validate().then((data)=>{
+        data.isSuccess?navigate("/dashboard", { state: { username } }):setDisplayText("Invalid Credentials");
+      });
     }
   };
 
